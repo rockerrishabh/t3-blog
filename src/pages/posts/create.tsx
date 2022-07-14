@@ -5,9 +5,11 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import toast from "react-hot-toast";
 import { CreatePostInput } from "../../server/schema/post.schema";
+import { useRouter } from "next/router";
 
 function Create() {
   const utils = trpc.useContext();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -26,6 +28,7 @@ function Create() {
       await addPost.mutateAsync(data);
       toast.success("Successfully Created");
       reset();
+      router.push(`/posts/${data.slug}`);
     } catch (error) {
       toast.error("Error while Creating");
     }
