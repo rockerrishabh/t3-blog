@@ -40,7 +40,7 @@ function Post() {
     try {
       publishPost.mutateAsync({ id });
       toast.success("Successfully Published");
-      router.reload();
+      router.prefetch(`/posts/${post.data?.id}`);
     } catch (error) {
       toast.error("Error while Publishing...");
     }
@@ -57,7 +57,7 @@ function Post() {
     try {
       unPublishPost.mutateAsync({ id });
       toast.success("Successfully Un-Published");
-      router.reload();
+      router.prefetch(`/posts/${post.data?.id}`);
     } catch (error) {
       toast.error("Error while Un-Publishing...");
     }
