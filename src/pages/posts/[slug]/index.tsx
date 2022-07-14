@@ -85,20 +85,23 @@ function Post() {
               <div className="space-x-4 flex">
                 {session.user.email === post.data?.author.email && (
                   <>
-                    <button
-                      onClick={() => {
-                        handlePublishClick(post.data?.id);
-                      }}
-                    >
-                      Publish
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleUnPublishClick(post.data?.id);
-                      }}
-                    >
-                      Un-Publish
-                    </button>
+                    {post.data?.published === true ? (
+                      <button
+                        onClick={() => {
+                          handleUnPublishClick(post.data?.id);
+                        }}
+                      >
+                        Un-Publish
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          handlePublishClick(post.data?.id);
+                        }}
+                      >
+                        Publish
+                      </button>
+                    )}
                     <button
                       onClick={() => {
                         handleDeleteClick(post.data?.id);
