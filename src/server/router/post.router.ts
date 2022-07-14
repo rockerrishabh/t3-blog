@@ -128,26 +128,7 @@ export const postsRouter = createRouter()
       };
     },
   })
-  .query("get-my-posts", {
-    async resolve({ ctx }) {
-      if (!ctx.session?.user) {
-        new TRPCError({
-          code: "FORBIDDEN",
-          message: "Can not get your post while logged out",
-        });
-      }
-      const posts = await ctx.prisma.posts.findMany({
-        where: { authorId: ctx.session?.user.id },
-        select: defaultPostSelect,
-      });
-      if (posts.length === 0) {
-        new TRPCError({ code: "NOT_FOUND", message: "No posts found" });
-      }
-      if (posts) {
-        return posts;
-      }
-    },
-  })
+
   .mutation("publish-post", {
     input: getSinglePostSchema,
     async resolve({ ctx, input }) {
@@ -181,6 +162,29 @@ export const postsRouter = createRouter()
         data: { published: false },
         select: defaultPostSelect,
       });
+      return posts;
+    },
+  })
+  .query("my-posts", {
+    async resolve({ ctx }) {
+      if (!ctx.session?.user) {
+        new TRPCError({
+          code: "FORBIDDEN",
+          message: "Can not get my posts while logged out",
+        });
+      }
+      const posts = await ctx.prisma.posts.findMany({
+        where: {
+          authorId: ctx.session?.user.id,
+        },
+        select: defaultPostSelect,
+      });
+      if (posts.length === 0) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No posts found",
+        });
+      }
       return posts;
     },
   });

@@ -1,13 +1,15 @@
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { trpc } from "../../utils/trpc";
 import ErrorPage from "../404";
 import { authOptions } from "../api/auth/[...nextauth]";
 
 function MyPosts() {
-  const posts = trpc.useQuery(["posts.get-my-posts"]);
+  const router = useRouter();
+  const posts = trpc.useQuery(["posts.my-posts"]);
 
   if (posts.status === "loading") {
     return <p>Loading...</p>;
