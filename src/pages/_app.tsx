@@ -23,7 +23,7 @@ const MyApp: AppType = ({
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : "https://localhost:3000";
+  : "http://localhost:3000";
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {
