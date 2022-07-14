@@ -32,7 +32,7 @@ function Post() {
   const publishPost = trpc.useMutation("posts.publish-post", {
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.invalidateQueries(["posts.all"]);
+      await utils.invalidateQueries(["posts.my-posts"]);
     },
   });
 
@@ -40,7 +40,6 @@ function Post() {
     try {
       publishPost.mutateAsync({ id });
       toast.success("Successfully Published");
-      () => router.reload();
     } catch (error) {
       toast.error("Error while Publishing...");
     }
@@ -49,7 +48,7 @@ function Post() {
   const unPublishPost = trpc.useMutation("posts.unpublish-post", {
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.invalidateQueries(["posts.all"]);
+      await utils.invalidateQueries(["posts.my-posts"]);
     },
   });
 
@@ -57,7 +56,6 @@ function Post() {
     try {
       unPublishPost.mutateAsync({ id });
       toast.success("Successfully Un-Published");
-      () => router.reload();
     } catch (error) {
       toast.error("Error while Un-Publishing...");
     }
