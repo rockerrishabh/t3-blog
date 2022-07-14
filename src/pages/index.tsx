@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { trpc } from "../utils/trpc";
+import { getCookie } from "cookies-next";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const Home: NextPage = () => {
@@ -41,13 +42,15 @@ const Home: NextPage = () => {
             <p>{session.user?.role}</p>
           </>
         ) : (
-          <button
-            onClick={() => {
-              signIn("google");
-            }}
-          >
-            Sign In
-          </button>
+          <div>
+            <button
+              onClick={() => {
+                signIn("google");
+              }}
+            >
+              Sign In
+            </button>
+          </div>
         )}
       </div>
 
