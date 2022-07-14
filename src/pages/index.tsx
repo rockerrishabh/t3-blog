@@ -4,7 +4,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { trpc } from "../utils/trpc";
-import { getCookie } from "cookies-next";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const Home: NextPage = () => {
