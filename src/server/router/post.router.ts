@@ -133,14 +133,19 @@ export const postsRouter = createRouter()
       if (!ctx.session?.user) {
         new TRPCError({
           code: "FORBIDDEN",
-          message: "Can not create a post while logged out",
+          message: "Can not get your post while logged out",
         });
       }
       const posts = await ctx.prisma.posts.findMany({
-        where: { author: { email: ctx.session?.user.email } },
+        where: { authorId: ctx.session?.user.id },
         select: defaultPostSelect,
       });
-      return posts;
+      if (posts.length === 0) {
+        new TRPCError({ code: "NOT_FOUND", message: "No posts found" });
+      }
+      if (posts) {
+        return posts;
+      }
     },
   })
   .mutation("publish-post", {
