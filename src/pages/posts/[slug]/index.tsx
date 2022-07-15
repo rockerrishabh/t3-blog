@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { GetSinglePostById } from "../../../server/schema/post.schema";
 import { trpc } from "../../../utils/trpc";
@@ -32,7 +33,7 @@ function Post() {
   const publishPost = trpc.useMutation("posts.publish-post", {
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.invalidateQueries(["posts.my-posts"]);
+      await utils.invalidateQueries(["posts.bySlug"]);
     },
   });
 
@@ -48,7 +49,7 @@ function Post() {
   const unPublishPost = trpc.useMutation("posts.unpublish-post", {
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.invalidateQueries(["posts.my-posts"]);
+      await utils.invalidateQueries(["posts.bySlug"]);
     },
   });
 
