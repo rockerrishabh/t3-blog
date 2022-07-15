@@ -16,6 +16,14 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/dashboard.jsx", "src/server/passport.js", "src/server/passport.js", "src/server/passport.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/pages/dashboard.jsx",
+    "src/server/passport.js",
+    "src/server/passport.js",
+    "src/server/passport.js"
+  ],
   "exclude": ["node_modules"]
 }

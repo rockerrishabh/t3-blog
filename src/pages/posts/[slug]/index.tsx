@@ -15,6 +15,8 @@ function Post() {
     async onSuccess() {
       // refetches posts after a post is added
       await utils.invalidateQueries(["posts.my-posts"]);
+      await utils.invalidateQueries(["posts.all"]);
+      await utils.invalidateQueries(["posts.bySlug"]);
     },
   });
 
@@ -32,6 +34,8 @@ function Post() {
     async onSuccess() {
       // refetches posts after a post is added
       await utils.invalidateQueries(["posts.bySlug"]);
+      await utils.invalidateQueries(["posts.all"]);
+      await utils.invalidateQueries(["posts.my-posts"]);
     },
   });
 
@@ -48,6 +52,8 @@ function Post() {
     async onSuccess() {
       // refetches posts after a post is added
       await utils.invalidateQueries(["posts.bySlug"]);
+      await utils.invalidateQueries(["posts.all"]);
+      await utils.invalidateQueries(["posts.my-posts"]);
     },
   });
 

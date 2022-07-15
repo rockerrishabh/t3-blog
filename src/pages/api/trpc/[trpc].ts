@@ -3,8 +3,10 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 import { appRouter } from "../../../server/router/app.router";
 import { createContext } from "../../../server/createContext";
+import { createSSGHelpers } from "@trpc/react/ssg";
 
 // export API handler
+
 export default trpcNext.createNextApiHandler({
   router: appRouter,
   createContext,
