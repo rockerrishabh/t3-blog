@@ -73,15 +73,15 @@ export const postsRouter = createRouter()
   .query("bySlug", {
     input: getSinglePostSchemaBySlug,
     async resolve({ ctx, input }) {
-      const { slug } = input;
+      const byslug = input.slug;
       const post = await ctx.prisma.posts.findUnique({
-        where: { slug },
+        where: { slug: byslug },
         select: defaultPostSelect,
       });
       if (!post) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: `No post with slug '${slug}'`,
+          message: `No post with slug '${byslug}'`,
         });
       }
       return post;

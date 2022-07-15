@@ -19,4 +19,7 @@ export default trpcNext.createNextApiHandler({
   /**
    * Enable query batching
    */
+  batching: {
+    enabled: true,
+  },
 });

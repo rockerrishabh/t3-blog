@@ -5,6 +5,7 @@ import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
+import { loggerLink } from "@trpc/client/links/loggerLink";
 import "../styles/globals.css";
 import { Toaster } from "react-hot-toast";
 
@@ -31,12 +32,6 @@ export default withTRPC<AppRouter>({
      * @link https://trpc.io/docs/ssr
      */
     const url = `${baseUrl}/api/trpc`;
-    const links = [
-      httpBatchLink({
-        maxBatchSize: 10,
-        url,
-      }),
-    ];
 
     return {
       /**
@@ -52,7 +47,7 @@ export default withTRPC<AppRouter>({
         }
         return {};
       },
-      links,
+      url,
       transformer: superjson,
     };
   },
@@ -60,5 +55,5 @@ export default withTRPC<AppRouter>({
   /**
    * @link https://trpc.io/docs/ssr
    */
-  ssr: false,
+  ssr: true,
 })(MyApp);
