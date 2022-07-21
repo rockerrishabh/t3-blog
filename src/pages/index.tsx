@@ -16,23 +16,23 @@ const Home: NextPage = () => {
   }
 
   if (isLoading) {
-    return <Layout title="Blog">Loading...</Layout>;
+    return <Layout title="- Loading">Loading...</Layout>;
   }
 
   if (error) {
-    return <Layout title="Blog">Error: {error.message}</Layout>;
+    return <Layout title="- Page Not Found">Error: {error.message}</Layout>;
   }
 
   if (data) {
     return (
-      <Layout className="max-w-7xl mx-auto" title="Blog">
-        <h1 className="mt-8">Recent Posts</h1>
+      <Layout title="" className="max-w-7xl mx-auto">
+        <h1 className="mt-5">Recent Posts</h1>
         <div className="grid mt-5 grid-cols-3 gap-6">
           {data.map((post) => (
             <Link href={`/posts/${post.slug}`} key={post.id}>
-              <a>
-                <article className="border-2 prose lg:prose-xl hover:border-red-500 rounded-md p-5">
-                  <h4 className="font-semibold hover:underline hover:text-red-400">
+              <a className="group">
+                <article className="border-2 prose lg:prose-xl group-hover:border-red-500 rounded-md p-5">
+                  <h4 className="font-semibold group-hover:underline group-hover:text-red-400">
                     {post.title}
                   </h4>
                   <p className="truncate">{post.body}</p>

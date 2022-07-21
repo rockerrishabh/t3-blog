@@ -10,6 +10,7 @@ import ErrorPage from "../../404";
 function Post() {
   const router = useRouter();
   const slug = router.query.slug as string;
+  console.log(router.asPath);
   const { data: session } = useSession();
   const utils = trpc.useContext();
   const { data, isLoading, error } = trpc.useQuery(["posts.bySlug", { slug }]);
@@ -26,7 +27,7 @@ function Post() {
     try {
       deletePost.mutateAsync({ id });
       toast.success("Successfully Deleted");
-      router.back();
+      router.push("/dashboard/my-posts");
     } catch (error) {
       toast.error("Error while Deleting...");
     }
@@ -69,20 +70,22 @@ function Post() {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Layout title="- Loading">Loading...</Layout>;
   }
   if (error) {
-    return <ErrorPage />;
+    return (
+      <ErrorPage errorTitle="- Page Not Found" pageError={error.message} />
+    );
   }
 
   if (data) {
     return (
-      <Layout title={`Blog - ${data.title}`} className="max-w-7xl mx-auto">
-        <div className="mt-8 flex items-center justify-between">
+      <Layout title={`- ${data.title}`} className="max-w-7xl mx-auto">
+        <div className="mt-5 flex items-center justify-between">
           <h1 className="">Post</h1>
           {session && session.user.id === data.authorId && (
             <div className="flex space-x-4">
-              <Link href={`/posts/${data.slug}/edit`}>
+              <Link href={`/dashboard/my-posts/${data.slug}/edit`}>
                 <button className="py-2 px-4 bg-slate-600 text-white hover:bg-slate-500 rounded-md">
                   Edit
                 </button>

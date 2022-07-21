@@ -3,10 +3,10 @@ import { unstable_getServerSession } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
-import ErrorPage from "./404";
-import { authOptions } from "./api/auth/[...nextauth]";
-import Layout from "../components/Layout";
+import { trpc } from "../../../utils/trpc";
+import ErrorPage from "../../404";
+import { authOptions } from "../../api/auth/[...nextauth]";
+import Layout from "../../../components/Layout";
 import { useSession } from "next-auth/react";
 
 function MyPosts() {
@@ -15,34 +15,34 @@ function MyPosts() {
   const { data, isLoading, error } = trpc.useQuery(["posts.my-posts"]);
 
   if (isLoading) {
-    return <Layout>Loading...</Layout>;
+    return <Layout title="- My Posts">Loading...</Layout>;
   }
 
   if (error) {
-    return <ErrorPage />;
+    return (
+      <ErrorPage errorTitle="- Page Not Found" pageError={error.message} />
+    );
   }
 
   if (data) {
     return (
-      <Layout title="Blog - My Posts" className="max-w-7xl mx-auto">
-        <div className="mt-8 flex items-center justify-between">
+      <Layout title="- My Posts" className="max-w-7xl mx-auto">
+        <div className="mt-5 flex items-center justify-between">
           <h1 className="">Post</h1>
           {session && (
-            <div className="flex space-x-4">
-              <Link href="/posts/create">
-                <button className="py-2 px-4 bg-cyan-600 text-white hover:bg-cyan-500 rounded-md">
-                  Create new Post
-                </button>
-              </Link>
-            </div>
+            <Link href="/dashboard/my-posts/create">
+              <button className="py-2 px-4 bg-cyan-600 text-white hover:bg-cyan-500 rounded-md">
+                Create new Post
+              </button>
+            </Link>
           )}
         </div>
         <div className="grid mt-5 grid-cols-3 gap-6">
           {data.map((post) => (
             <Link href={`/posts/${post.slug}`} key={post.id}>
-              <a>
-                <article className="border-2 prose lg:prose-xl hover:border-red-500 rounded-md p-5">
-                  <h4 className="font-semibold hover:underline hover:text-red-400">
+              <a className="group">
+                <article className="border-2 prose lg:prose-xl group-hover:border-red-500 rounded-md p-5">
+                  <h4 className="font-semibold group-hover:underline group-hover:text-red-400">
                     {post.title}
                   </h4>
                   <p className="truncate">{post.body}</p>
@@ -54,6 +54,7 @@ function MyPosts() {
       </Layout>
     );
   }
+  return null;
 }
 
 export default MyPosts;
