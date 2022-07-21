@@ -22,7 +22,7 @@ export const getSinglePostSchemaBySlug = z.object({
 export type GetSinglePostBySlug = z.TypeOf<typeof getSinglePostSchemaBySlug>;
 
 export const editPostSchema = z.object({
-  id: z.string(),
+  id: z.string().cuid(),
   title: z.string().min(1).max(256, "Max title length is 256"),
   body: z.string().min(50),
   slug: z.string().min(1),

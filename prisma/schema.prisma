@@ -88,17 +88,15 @@ model User {
   emailVerified DateTime? @updatedAt
   image         String?
   password      String?
-  role          Role      @default(USER)
+  role          Role      @default(User)
   Posts         Posts[]
   accounts      Account[]
   sessions      Session[]
 }
 
 enum Role {
-  USER
-  AUTHOR
-  EDITOR
-  ADMIN
+  User
+  Admin
 }
 
 model VerificationToken {

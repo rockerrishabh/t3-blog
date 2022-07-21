@@ -1,5 +1,7 @@
+import Layout from "../components/Layout";
+
 function ErrorPage() {
-  return <div>ErrorPage</div>;
+  return <Layout>ErrorPage</Layout>;
 }
 
 export default ErrorPage;

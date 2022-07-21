@@ -25,39 +25,12 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    redirect: async (params: { url: string; baseUrl: string }) =>
-      Promise.resolve(params.url),
-    session: async ({
-      session,
-      token,
-      user,
-    }: {
-      session: any;
-      token: any;
-      user: any;
-    }) => {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: user.id,
-          role: user.role,
-        },
-      };
+    async session({ session, token, user }) {
+      session.user.id = user.id;
+      session.user.role = user.role;
+      return session;
     },
   },
 };
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      image?: string;
-      role?: string;
-    };
-  }
-}
 
 export default NextAuth(authOptions);

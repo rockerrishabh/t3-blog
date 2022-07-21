@@ -20,6 +20,7 @@ const defaultPostSelect = Prisma.validator<
   published: true,
   createdAt: true,
   updatedAt: true,
+  authorId: true,
   author: {
     select: {
       name: true,
@@ -32,7 +33,7 @@ export const postsRouter = createRouter()
   .mutation("add", {
     input: createPostSchema,
     async resolve({ ctx, input }) {
-      if (!ctx.session?.user) {
+      if (!ctx.session) {
         new TRPCError({
           code: "FORBIDDEN",
           message: "Can not create a post while logged out",
@@ -87,6 +88,7 @@ export const postsRouter = createRouter()
       return post;
     },
   })
+
   // update
   .mutation("edit", {
     input: editPostSchema,
@@ -99,7 +101,7 @@ export const postsRouter = createRouter()
       }
       const { id, title, slug, featuredImage, body } = input;
       const post = await ctx.prisma.posts.update({
-        where: { id },
+        where: { id: id },
         data: {
           title: title,
           slug: slug,
@@ -178,8 +180,11 @@ export const postsRouter = createRouter()
           authorId: ctx.session?.user.id,
         },
         select: defaultPostSelect,
+        orderBy: {
+          updatedAt: "desc",
+        },
       });
-      if (posts.length === 0) {
+      if (!posts) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "No posts found",
