@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import parse from "html-react-parser";
 import ErrorPage from "../components/Error";
 import Layout from "../components/Layout";
 import { trpc } from "../utils/trpc";
@@ -14,11 +15,11 @@ const Home: NextPage = () => {
   const { data, isLoading, error } = trpc.useQuery(["posts.all"]);
 
   if (status === "loading") {
-    <Layout title="Blog">Loading....</Layout>;
+    <Layout title="">Loading....</Layout>;
   }
 
   if (isLoading) {
-    return <Layout title="- Loading">Loading...</Layout>;
+    return <Layout title="">Loading...</Layout>;
   }
 
   if (error) {
@@ -42,7 +43,9 @@ const Home: NextPage = () => {
                         {post.title}
                       </a>
                     </Link>
-                    <p className="line-clamp-3 text-slate-500">{post.body}</p>
+                    <p className="line-clamp-3 text-slate-500">
+                      {parse(post.body)}
+                    </p>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex cursor-pointer space-x-2 items-center">

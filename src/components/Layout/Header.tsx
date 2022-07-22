@@ -4,32 +4,41 @@ import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 
 function Header() {
   const { data: session } = useSession();
   const router = useRouter();
 
   return (
-    <div className="sticky items-center bg-white flex top-0 py-3 border-b px-14 justify-between">
+    <div className="sticky items-center z-10 bg-white flex top-0 py-3 border-b px-14 justify-between">
       <Link href="/">
-        <a>Blog</a>
+        <a className="font-bold text-xl hover:scale-105 hover:text-red-500 hover:animate-pulse">
+          Blog
+        </a>
       </Link>
       <div className="flex items-center space-x-8">
         <div className="flex space-x-4">
           <Link href="/">
-            <a>About Us</a>
+            <a className="hover:text-blue-500 hover:scale-105 hover:font-medium">
+              About Us
+            </a>
           </Link>
           <Link href="/">
-            <a>Privacy Policy</a>
+            <a className="hover:text-blue-500 hover:scale-105 hover:font-medium">
+              Privacy Policy
+            </a>
           </Link>
           <Link href="/">
-            <a>Terms and Conditions</a>
+            <a className="hover:text-blue-500 hover:scale-105 hover:font-medium">
+              Terms and Conditions
+            </a>
           </Link>
         </div>
         {session ? (
-          <div className="space-x-4 items-center flex">
+          <div className="space-x-6 items-center flex">
             <Link href="/dashboard/my-posts">
-              <button className="py-2 px-4 bg-yellow-600 hover:bg-yellow-500 rounded-md text-white">
+              <button className="py-2 px-4 bg-amber-600 hover:bg-amber-500 rounded-md text-white">
                 My Posts
               </button>
             </Link>
@@ -43,6 +52,7 @@ function Header() {
                     src={session?.user.image}
                     alt={session?.user.name}
                   />
+                  <ChevronDownIcon className="h-5 w-5 text-slate-500" />
                 </Menu.Button>
               </div>
               <Transition

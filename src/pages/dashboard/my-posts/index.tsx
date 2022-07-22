@@ -7,6 +7,7 @@ import Layout from "../../../components/Layout";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import ErrorPage from "../../../components/Error";
+import parse from "html-react-parser";
 
 function MyPosts() {
   const { data: session } = useSession();
@@ -47,7 +48,9 @@ function MyPosts() {
                         {post.title}
                       </a>
                     </Link>
-                    <p className="line-clamp-3 text-slate-500">{post.body}</p>
+                    <p className="line-clamp-3 text-slate-500">
+                      {parse(post.body)}
+                    </p>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex cursor-pointer space-x-2 items-center">

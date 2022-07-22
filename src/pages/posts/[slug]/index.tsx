@@ -1,15 +1,16 @@
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import ErrorPage from "../../../components/Error";
 import Layout from "../../../components/Layout";
 import { trpc } from "../../../utils/trpc";
+import parse from "html-react-parser";
 
 function Post() {
   const router = useRouter();
   const slug = router.query.slug as string;
-  console.log(router.asPath);
   const { data: session } = useSession();
   const utils = trpc.useContext();
   const { data, isLoading, error } = trpc.useQuery(["posts.bySlug", { slug }]);
@@ -69,7 +70,7 @@ function Post() {
   };
 
   if (isLoading) {
-    return <Layout title="- Loading">Loading...</Layout>;
+    return <Layout title="">Loading...</Layout>;
   }
   if (error) {
     return (
@@ -79,7 +80,7 @@ function Post() {
 
   if (data) {
     return (
-      <Layout title={`- ${data.title}`} className="max-w-7xl mx-auto">
+      <Layout title={`- ${data.title}`} className="max-w-7xl mb-10 mx-auto">
         <div className="mt-5 flex items-center justify-between">
           <h1 className="">Post</h1>
           {session && session.user.id === data.authorId && (
@@ -114,14 +115,23 @@ function Post() {
           )}
         </div>
 
-        <article className="space-y-3 prose lg:prose-xl flex flex-col mt-8">
-          <h3>{data.title}</h3>
-          <p>{data.body}</p>
+        <article className="space-y-10 flex flex-col mt-8">
+          <h3 className="font-semibold text-xl">{data.title}</h3>
+          <p>{parse(data.body)}</p>
         </article>
         <div className="mt-14 items-center flex justify-between">
-          <div>
-            <p className="">By:- {data.author.name}</p>
-            {session && <p className="">{data.author.email}</p>}
+          <div className="flex items-center space-x-3">
+            <Image
+              className="rounded-full"
+              src={data.author.image as string}
+              alt={data.author.name as string}
+              height="40px"
+              width="40px"
+            />
+            <div>
+              <p className="">{data.author.name}</p>
+              {session && <p className="">{data.author.email}</p>}
+            </div>
           </div>
           <em>Date:- {data.updatedAt.toLocaleDateString("en-in")}</em>
         </div>

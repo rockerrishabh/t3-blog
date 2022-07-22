@@ -16,16 +16,16 @@ export const getSinglePostSchema = z.object({
 export type GetSinglePostById = z.TypeOf<typeof getSinglePostSchema>;
 
 export const getSinglePostSchemaBySlug = z.object({
-  slug: z.string(),
+  slug: z.string().min(1),
 });
 
 export type GetSinglePostBySlug = z.TypeOf<typeof getSinglePostSchemaBySlug>;
 
 export const editPostSchema = z.object({
-  id: z.string().cuid(),
-  title: z.string().min(1).max(256, "Max title length is 256"),
-  body: z.string().min(50),
-  slug: z.string().min(1),
+  id: z.string(),
+  title: z.string(),
+  body: z.string(),
+  slug: z.string(),
   featuredImage: z.string(),
 });
 

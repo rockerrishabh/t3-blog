@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { trpc } from "../../../utils/trpc";
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
@@ -9,13 +9,19 @@ import { useRouter } from "next/router";
 import Layout from "../../../components/Layout";
 import { useSession } from "next-auth/react";
 import ErrorPage from "../../../components/Error";
+import dynamic from "next/dynamic";
+import "suneditor/dist/css/suneditor.min.css";
+
+const SunEditor = dynamic(() => import("suneditor-react"), {
+  ssr: false,
+});
 
 function Create() {
   const utils = trpc.useContext();
   const { data: session, status } = useSession();
   const router = useRouter();
   const {
-    register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -56,79 +62,115 @@ function Create() {
       <Layout title="- Create a new Post" className="max-w-7xl mx-auto">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mt-10 space-y-4 justify-center flex-col flex items-center"
+          className="mt-10 space-y-4 flex-col flex"
         >
           <div className="flex space-x-2">
             <label htmlFor="title">Title: </label>
-            <div className="flex flex-col space-y-2">
-              <input
-                {...register("title", { required: true, maxLength: 256 })}
-                className="rounded-md outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
-                name="title"
-                type="text"
-              />
-              {errors.title?.type === "required" && (
-                <span className="text-red-500">This field is required</span>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur } }) => (
+                <input
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  className="rounded-md flex-1 outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
+                  name="title"
+                  type="text"
+                />
               )}
-              {errors.title?.type === "maxLength" && (
-                <span className="text-red-500">Max length is 256</span>
-              )}
-            </div>
+              name="title"
+              rules={{ required: true }}
+            />
           </div>
           <div className="flex space-x-2">
             <label htmlFor="slug">Slug: </label>
-            <div className="flex flex-col space-y-2">
-              <input
-                {...register("slug", { required: true, maxLength: 256 })}
-                className="rounded-md outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
-                name="slug"
-                type="text"
-              />
-              {errors.slug?.type === "required" && (
-                <span className="text-red-500">This field is required</span>
+
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur } }) => (
+                <input
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  className="rounded-md flex-1 outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
+                  name="slug"
+                  type="text"
+                />
               )}
-              {errors.slug?.type === "maxLength" && (
-                <span className="text-red-500">Max length is 256</span>
-              )}
-            </div>
+              name="slug"
+              rules={{ required: true }}
+            />
           </div>
           <div className="flex space-x-2">
-            <label htmlFor="featuredImage">Featured Image URL: </label>
-            <div className="flex flex-col space-y-2">
-              <input
-                {...register("featuredImage", {
-                  required: true,
-                  maxLength: 256,
-                })}
-                className="rounded-md outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
-                name="featuredImage"
-                type="text"
-              />
-              {errors.featuredImage?.type === "required" && (
-                <span className="text-red-500">This field is required</span>
+            <label htmlFor="featuredImage">Image: </label>
+
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur } }) => (
+                <input
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  className="rounded-md flex-1 outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
+                  name="featuredImage"
+                  type="text"
+                />
               )}
-              {errors.featuredImage?.type === "maxLength" && (
-                <span className="text-red-500">Max length is 256</span>
-              )}
-            </div>
+              name="featuredImage"
+              rules={{ required: true }}
+            />
           </div>
           <div className="flex space-x-2">
             <label htmlFor="body">Body: </label>
-            <div className="flex flex-col space-y-2">
-              <textarea
-                {...register("body", { required: true, minLength: 50 })}
-                className="rounded-md outline-none border border-gray-400 focus:border-0 focus:ring focus:ring-blue-500"
-                name="body"
-              />
-              {errors.body?.type === "required" && (
-                <span className="text-red-500">This field is required</span>
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur } }) => (
+                <SunEditor
+                  width="100%"
+                  height="100%"
+                  onChange={onChange} // send value to hook form
+                  onBlur={onBlur} // notify when input is touched
+                  setOptions={{
+                    height: "100%",
+                    width: "100%",
+
+                    attributesWhitelist: {
+                      all: "style",
+                    },
+                    buttonList: [
+                      // Default
+                      ["undo", "redo"],
+                      ["font", "fontSize", "formatBlock"],
+                      ["paragraphStyle", "blockquote"],
+                      [
+                        "bold",
+                        "underline",
+                        "italic",
+                        "strike",
+                        "subscript",
+                        "superscript",
+                      ],
+                      ["fontColor", "hiliteColor", "textStyle"],
+                      ["removeFormat"],
+                      ["outdent", "indent"],
+                      ["align", "horizontalRule", "list", "lineHeight"],
+                      ["table", "link", "image", "video", "audio"],
+                      ["fullScreen", "showBlocks", "codeView"],
+                      ["preview", "print"],
+                    ], // Or Array of button list, eg. [['font', 'align'], ['image']]
+                    // plugins: [font] set plugins, all plugins are set by default
+                    // Other option
+                    imageFileInput: false,
+                  }}
+                />
               )}
-              {errors.body?.type === "minLength" && (
-                <span className="text-red-500">Minimum length is 10</span>
-              )}
-            </div>
+              name="body"
+              rules={{ required: true }}
+            />
           </div>
-          <button type="submit">Submit</button>
+          <button
+            className="rounded-md text-white hover:bg-cyan-400 bg-cyan-500 py-3"
+            type="submit"
+          >
+            Submit
+          </button>
         </form>
       </Layout>
     );

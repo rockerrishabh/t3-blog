@@ -76,7 +76,7 @@ export const postsRouter = createRouter()
     input: getSinglePostSchemaBySlug,
     async resolve({ ctx, input }) {
       const byslug = input.slug;
-      const post = await ctx.prisma.posts.findUnique({
+      const post = await ctx.prisma.posts.findFirst({
         where: { slug: byslug },
         select: defaultPostSelect,
       });
@@ -100,14 +100,15 @@ export const postsRouter = createRouter()
           message: "Can not edit a post while logged out",
         });
       }
-      const { id, title, slug, featuredImage, body } = input;
+      const { id, title, body, slug, featuredImage } = input;
       const post = await ctx.prisma.posts.update({
-        where: { id: id },
+        where: { id },
         data: {
-          title: title,
-          slug: slug,
-          featuredImage: featuredImage,
-          body: body,
+          title,
+          body,
+          slug,
+          featuredImage,
+          author: { connect: { id: ctx.session?.user.id } },
         },
         select: defaultPostSelect,
       });
