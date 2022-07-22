@@ -119,7 +119,7 @@ function Post() {
           <h3>{data.title}</h3>
           <p>{data.body}</p>
         </article>
-        <div className="mt-6 items-center flex justify-between">
+        <div className="mt-14 items-center flex justify-between">
           <div>
             <p className="">By:- {data.author.name}</p>
             {session && <p className="">{data.author.email}</p>}

@@ -1,20 +1,12 @@
+import ErrorPage from "../components/Error";
 import Layout from "../components/Layout";
 
-function ErrorPage({
-  pageError,
-  errorTitle,
-}: {
-  pageError: string;
-  errorTitle: string;
-}) {
+function NotFoundPage() {
   return (
-    <Layout title={errorTitle}>
-      <div>
-        <h1>Page Not Found</h1>
-        <p>Error: {pageError}</p>
-      </div>
+    <Layout>
+      <ErrorPage pageError="Not Found" errorTitle="Not Found" />
     </Layout>
   );
 }
 
-export default ErrorPage;
+export default NotFoundPage;

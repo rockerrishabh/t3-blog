@@ -2,16 +2,16 @@ import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Head from "next/head";
 import { trpc } from "../../../utils/trpc";
-import ErrorPage from "../../404";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import Layout from "../../../components/Layout";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import ErrorPage from "../../../components/Error";
 
 function MyPosts() {
   const { data: session } = useSession();
-  const router = useRouter();
+
   const { data, isLoading, error } = trpc.useQuery(["posts.my-posts"]);
 
   if (isLoading) {
@@ -37,18 +37,37 @@ function MyPosts() {
             </Link>
           )}
         </div>
-        <div className="grid mt-5 grid-cols-3 gap-6">
+        <div className="mt-5 mb-10 grid grid-cols-2 gap-5">
           {data.map((post) => (
-            <Link href={`/posts/${post.slug}`} key={post.id}>
-              <a className="group">
-                <article className="border-2 prose lg:prose-xl group-hover:border-red-500 rounded-md p-5">
-                  <h4 className="font-semibold group-hover:underline group-hover:text-red-400">
-                    {post.title}
-                  </h4>
-                  <p className="truncate">{post.body}</p>
-                </article>
-              </a>
-            </Link>
+            <div key={post.id} className="group">
+              <article className="border p-5 group-hover:border-gray-600">
+                <div className="flex flex-col space-y-10">
+                  <div className="flex flex-col space-y-3">
+                    <Link href={`/posts/${post.slug}`} key={post.id}>
+                      <a className="font-medium text-lg line-clamp-2 group-hover:underline group-hover:text-red-400">
+                        {post.title}
+                      </a>
+                    </Link>
+                    <p className="line-clamp-3 text-slate-500">{post.body}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex cursor-pointer space-x-2 items-center">
+                      <Image
+                        className="rounded-full"
+                        src={post.author.image as string}
+                        height="30px"
+                        width="30px"
+                        alt={post.author.name as string}
+                      />
+                      <p className="text-sm">{post.author.name}</p>
+                    </div>
+                    <p className="text-sm">
+                      {post.updatedAt.toLocaleDateString("en-in")}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </div>
           ))}
         </div>
       </Layout>

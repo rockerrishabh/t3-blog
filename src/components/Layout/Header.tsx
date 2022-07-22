@@ -10,7 +10,7 @@ function Header() {
   const router = useRouter();
 
   return (
-    <div className="sticky items-center flex top-0 py-3 border-b px-14 justify-between">
+    <div className="sticky items-center bg-white flex top-0 py-3 border-b px-14 justify-between">
       <Link href="/">
         <a>Blog</a>
       </Link>

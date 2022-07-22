@@ -25,6 +25,7 @@ const defaultPostSelect = Prisma.validator<
     select: {
       name: true,
       email: true,
+      image: true,
     },
   },
 });
