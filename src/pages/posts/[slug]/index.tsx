@@ -1,11 +1,10 @@
 import { useSession } from "next-auth/react";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import ErrorPage from "../../../components/Error";
 import Layout from "../../../components/Layout";
 import { trpc } from "../../../utils/trpc";
-import ErrorPage from "../../404";
 
 function Post() {
   const router = useRouter();

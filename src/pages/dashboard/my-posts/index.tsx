@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { trpc } from "../../../utils/trpc";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import Layout from "../../../components/Layout";

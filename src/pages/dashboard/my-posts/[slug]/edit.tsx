@@ -6,10 +6,10 @@ import { authOptions } from "../../../api/auth/[...nextauth]";
 import toast from "react-hot-toast";
 import { EditPostInput } from "../../../../server/schema/post.schema";
 import { useRouter } from "next/router";
-import ErrorPage from "../../../404";
 import Head from "next/head";
 import Layout from "../../../../components/Layout";
 import { useSession } from "next-auth/react";
+import ErrorPage from "../../../../components/Error";
 
 function Edit() {
   const router = useRouter();

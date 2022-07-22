@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import ErrorPage from "../components/Error";
 import Layout from "../components/Layout";
 import { trpc } from "../utils/trpc";
 import { authOptions } from "./api/auth/[...nextauth]";
@@ -21,7 +22,9 @@ const Home: NextPage = () => {
   }
 
   if (error) {
-    return <Layout title="- Page Not Found">Error: {error.message}</Layout>;
+    return (
+      <ErrorPage errorTitle="- Page Not Found" pageError={error.message} />
+    );
   }
 
   if (data) {

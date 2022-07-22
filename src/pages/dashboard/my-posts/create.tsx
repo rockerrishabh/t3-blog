@@ -8,7 +8,7 @@ import { CreatePostInput } from "../../../server/schema/post.schema";
 import { useRouter } from "next/router";
 import Layout from "../../../components/Layout";
 import { useSession } from "next-auth/react";
-import ErrorPage from "../../404";
+import ErrorPage from "../../../components/Error";
 
 function Create() {
   const utils = trpc.useContext();
