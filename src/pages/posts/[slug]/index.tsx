@@ -7,6 +7,9 @@ import ErrorPage from "../../../components/Error";
 import Layout from "../../../components/Layout";
 import { trpc } from "../../../utils/trpc";
 import parse from "html-react-parser";
+import { unstable_getServerSession } from "next-auth";
+import { GetServerSideProps } from "next";
+import { authOptions } from "../../api/auth/[...nextauth]";
 
 function Post() {
   const router = useRouter();
@@ -142,3 +145,14 @@ function Post() {
 }
 
 export default Post;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  return {
+    props: { session },
+  };
+};
